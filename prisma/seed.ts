@@ -50,9 +50,9 @@ async function main() {
       facebookUrl: "https://www.facebook.com/mathcomputers.be",
       heroTitle: "Uw computerwinkel in de buurt",
       heroSubtitle:
-        "Verkoop met eigen hersteldienst. Meer dan 15 jaar ervaring in Herk-de-Stad.",
+        "Verkoop met eigen hersteldienst. Meer dan 20 jaar ervaring in Herk-de-Stad.",
       aboutText:
-        "Lokale computerwinkel met meer dan 15 jaar ervaring. We bieden snelle service online of in onze winkel. Sterke prijzen op maat met een persoonlijke uitleg. *Wij doen géén Apple producten.",
+        "Lokale computerwinkel met meer dan 20 jaar ervaring. We bieden snelle service online of in onze winkel. Sterke prijzen op maat met een persoonlijke uitleg. *Wij doen géén Apple producten.",
     },
   });
 

@@ -28,7 +28,7 @@ export default async function HomePage() {
           <div className="text-white">
             <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium ring-1 ring-white/20">
               <ShieldCheck className="h-3.5 w-3.5 text-accent" />
-              Lokale computer specialist · +15 jaar ervaring
+              Lokale computer specialist · +20 jaar ervaring
             </p>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
               {settings.heroTitle}

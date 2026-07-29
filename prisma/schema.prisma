@@ -47,8 +47,8 @@ model SiteSettings {
   dataRecoveryUrl   String  @default("https://www.datarecuperatie.be/nl")
   facebookUrl       String  @default("https://www.facebook.com/mathcomputers.be")
   heroTitle         String  @default("Uw computerwinkel in de buurt")
-  heroSubtitle      String  @default("Verkoop met eigen hersteldienst. Meer dan 15 jaar ervaring in Herk-de-Stad.")
-  aboutText         String  @default("Lokale computerwinkel met meer dan 15 jaar ervaring. Snelle service online of in onze winkel. Sterke prijzen op maat met een persoonlijke uitleg. *Wij doen géén Apple producten.")
+  heroSubtitle      String  @default("Verkoop met eigen hersteldienst. Meer dan 20 jaar ervaring in Herk-de-Stad.")
+  aboutText         String  @default("Lokale computerwinkel met meer dan 20 jaar ervaring. Snelle service online of in onze winkel. Sterke prijzen op maat met een persoonlijke uitleg. *Wij doen géén Apple producten.")
   noticeText        String?
 }
 
