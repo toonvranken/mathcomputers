@@ -1,0 +1,93 @@
+// MathComputers CMS + website
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum ServiceCategory {
+  MAIN
+  COURIER
+  EXTRA
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(EDITOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SiteSettings {
+  id                String  @id @default("default")
+  businessName      String  @default("MathComputers")
+  address           String  @default("Grote Baan 33")
+  postalCode        String  @default("3540")
+  city              String  @default("Herk-de-Stad")
+  phone             String  @default("013 29 30 51")
+  phoneHref         String  @default("+3213293051")
+  email             String  @default("info@mathcomputers.be")
+  vatNumber         String  @default("BE0872633477")
+  logoPath          String?
+  teamviewerUrl     String  @default("https://get.teamviewer.com/MathComputersSupport")
+  eshopUrl          String  @default("https://www.mathcomputers.exellent-it.be/nl")
+  repairStatusUrl   String  @default("https://mathcomputers.repairshopr.com/my_profile")
+  serviceRequestUrl String  @default("https://mathcomputers.repairshopr.com/wf/mail-in-widget-flow/start")
+  customerPortalUrl String  @default("https://mathcomputers.repairshopr.com/my_profile")
+  dataRecoveryUrl   String  @default("https://www.datarecuperatie.be/nl")
+  facebookUrl       String  @default("https://www.facebook.com/mathcomputers.be")
+  heroTitle         String  @default("Uw computerwinkel in de buurt")
+  heroSubtitle      String  @default("Verkoop met eigen hersteldienst. Meer dan 15 jaar ervaring in Herk-de-Stad.")
+  aboutText         String  @default("Lokale computerwinkel met meer dan 15 jaar ervaring. Snelle service online of in onze winkel. Sterke prijzen op maat met een persoonlijke uitleg. *Wij doen géén Apple producten.")
+  noticeText        String?
+}
+
+model OpeningHours {
+  id        String  @id @default(cuid())
+  dayOfWeek Int     @unique // 0 = zondag … 6 = zaterdag
+  openTime  String?
+  closeTime String?
+  isClosed  Boolean @default(false)
+}
+
+model SpecialClosure {
+  id        String   @id @default(cuid())
+  title     String
+  startDate DateTime
+  endDate   DateTime
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+model Service {
+  id          String          @id @default(cuid())
+  title       String
+  description String
+  icon        String          @default("Wrench")
+  category    ServiceCategory @default(MAIN)
+  url         String?
+  sortOrder   Int             @default(0)
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  email     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

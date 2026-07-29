@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MathComputers website
 
-## Getting Started
+Vernieuwde website voor [mathcomputers.be](https://mathcomputers.be) met beheerpaneel.
 
-First, run the development server:
+## Functies
+
+- **Publieke site** (NL): home, diensten, support, contact
+- **Altijd zichtbaar**: adres, telefoon, openingsuren + open/gesloten-status
+- **Extra sluitingsdagen / verlof** (beheerbaar)
+- **Diensten & koeriers** beheerbaar (GLS, PostNL, Homerr, loterij, datarecuperatie, …)
+- **Logo upload** via admin
+- **Externe integraties**: TeamViewer, E-Shop, service-aanvraag, status herstelling
+- **Contactformulier** met berichten in admin
+- **Rollen**: Admin (gebruikers beheren) en Editor
+
+## Starten
 
 ```bash
+cd web
+npm install
+npm run db:setup    # database + seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Admin login (na seed)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Veld        | Waarde                    |
+|-------------|---------------------------|
+| URL         | http://localhost:3000/admin |
+| E-mail      | `admin@mathcomputers.be`  |
+| Wachtwoord  | `AdminMath2026!`          |
 
-## Learn More
+**Wijzig dit wachtwoord meteen** via Gebruikers in het adminpaneel.
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Script | Beschrijving |
+|--------|--------------|
+| `npm run dev` | Development server |
+| `npm run build` | Productie build |
+| `npm run db:setup` | Schema push + seed |
+| `npm run db:studio` | Prisma Studio |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tech
 
-## Deploy on Vercel
+- Next.js (App Router) + TypeScript + Tailwind CSS
+- Prisma + SQLite (lokaal; later PostgreSQL mogelijk)
+- Auth.js (NextAuth) credentials
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Productie (OVH VPS)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Zie **[deploy/OVH-INSTALLATIE.md](deploy/OVH-INSTALLATIE.md)** — volledige stap-voor-stap.
+
+Code bijwerken op de server:
+
+```bash
+./deploy/update.sh
+```
+
+Inhoud (uren, logo, diensten, berichten) beheer je in **/admin** — geen server nodig.
