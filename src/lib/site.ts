@@ -151,6 +151,7 @@ export function computeOpenStatus(
 
   const today = hours.find((h) => h.dayOfWeek === now.dayOfWeek);
 
+  // Volledige sluitingsdag (bv. donderdag of zondag)
   if (!today || today.isClosed || !today.openTime || !today.closeTime) {
     return {
       isOpen: false,
@@ -166,14 +167,20 @@ export function computeOpenStatus(
   const closeMins = ch * 60 + cm;
   const isOpen = now.mins >= openMins && now.mins < closeMins;
 
+  let detail: string;
+  if (isOpen) {
+    detail = `Tot ${today.closeTime}`;
+  } else if (now.mins < openMins) {
+    detail = `Opent om ${today.openTime}`;
+  } else {
+    // Na sluitingstijd op een dag dat de winkel wél open was
+    detail = `Was open tot ${today.closeTime}`;
+  }
+
   return {
     isOpen,
     label: isOpen ? "Nu open" : "Gesloten",
-    detail: isOpen
-      ? `Tot ${today.closeTime}`
-      : now.mins < openMins
-        ? `Opent om ${today.openTime}`
-        : "Vandaag gesloten",
+    detail,
     closure: null,
   };
 }
