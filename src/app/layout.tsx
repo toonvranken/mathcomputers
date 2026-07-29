@@ -19,11 +19,17 @@ export const metadata: Metadata = {
   },
   description:
     "Uw lokale computer specialist in Herk-de-Stad. Herstellingen, datarecuperatie, online support, pakketpunten, Nationale Loterij en meer.",
+  icons: {
+    icon: [{ url: "/logo-mathcomputers.png", type: "image/png" }],
+    apple: [{ url: "/logo-mathcomputers.png", type: "image/png" }],
+    shortcut: "/logo-mathcomputers.png",
+  },
   openGraph: {
     title: "MathComputers",
     description: "Uw computerwinkel in de buurt — Herk-de-Stad",
     locale: "nl_BE",
     type: "website",
+    images: [{ url: "/logo-mathcomputers.png" }],
   },
 };
 
