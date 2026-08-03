@@ -35,6 +35,17 @@ const WEEKDAY_TO_JS: Record<string, number> = {
   Sat: 6,
 };
 
+export type SpecialDay = {
+  id: string;
+  title: string;
+  startDate: Date;
+  endDate: Date;
+  note: string | null;
+  fullyClosed: boolean;
+  openTime: string | null;
+  closeTime: string | null;
+};
+
 /** Huidige datum/tijd in Europe/Brussels (niet de server-locale). */
 export function getBrusselsNow(date: Date = new Date()) {
   const parts = new Intl.DateTimeFormat("en-GB", {
@@ -51,7 +62,7 @@ export function getBrusselsNow(date: Date = new Date()) {
   const get = (type: Intl.DateTimeFormatPartTypes) =>
     parts.find((p) => p.type === type)?.value ?? "";
 
-  const weekday = get("weekday"); // Mon, Tue, …
+  const weekday = get("weekday");
   const dayOfWeek = WEEKDAY_TO_JS[weekday] ?? 0;
   const hour = Number(get("hour"));
   const minute = Number(get("minute"));
@@ -64,19 +75,23 @@ export function getBrusselsNow(date: Date = new Date()) {
     hour,
     minute,
     mins: hour * 60 + minute,
-    /** yyyy-MM-dd in Brussels */
     dateKey: `${year}-${month}-${day}`,
   };
 }
 
-/** yyyy-MM-dd van een Date in Brussels (voor sluitingsperiodes). */
 export function toBrusselsDateKey(date: Date) {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: SHOP_TIMEZONE,
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(date); // en-CA → yyyy-MM-dd
+  }).format(date);
+}
+
+function isActiveOnDay(c: SpecialDay, dateKey: string) {
+  const startKey = toBrusselsDateKey(c.startDate);
+  const endKey = toBrusselsDateKey(c.endDate);
+  return dateKey >= startKey && dateKey <= endKey;
 }
 
 export async function getSiteData() {
@@ -85,7 +100,6 @@ export async function getSiteData() {
   const [settings, hours, closures, services] = await Promise.all([
     prisma.siteSettings.findUnique({ where: { id: "default" } }),
     prisma.openingHours.findMany({ orderBy: { dayOfWeek: "asc" } }),
-    // ruim genoeg filter; exacte dagcheck in computeOpenStatus (Brussels)
     prisma.specialClosure.findMany({
       where: {
         endDate: { gte: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) },
@@ -104,7 +118,6 @@ export async function getSiteData() {
     );
   }
 
-  // Alleen toekomstige/huidige sluitingen tonen (Brussels-kalender)
   const visibleClosures = closures.filter(
     (c) => toBrusselsDateKey(c.endDate) >= brussels.dateKey,
   );
@@ -125,56 +138,77 @@ export function computeOpenStatus(
     closeTime: string | null;
     isClosed: boolean;
   }>,
-  closures: Array<{
-    title: string;
-    startDate: Date;
-    endDate: Date;
-    note: string | null;
-  }>,
+  closures: SpecialDay[],
 ) {
   const now = getBrusselsNow();
 
-  const activeClosure = closures.find((c) => {
-    const startKey = toBrusselsDateKey(c.startDate);
-    const endKey = toBrusselsDateKey(c.endDate);
-    return now.dateKey >= startKey && now.dateKey <= endKey;
-  });
+  const special = closures.find((c) => isActiveOnDay(c, now.dateKey));
 
-  if (activeClosure) {
+  // Uitzondering: hele dag gesloten
+  if (special?.fullyClosed) {
     return {
       isOpen: false,
       label: "Tijdelijk gesloten",
-      detail: activeClosure.note || activeClosure.title,
-      closure: activeClosure,
+      detail: special.note || special.title,
+      closure: special,
+      specialHours: null as null | { openTime: string; closeTime: string },
     };
   }
 
-  const today = hours.find((h) => h.dayOfWeek === now.dayOfWeek);
+  // Uitzondering: aangepaste uren vandaag
+  let openTime: string | null = null;
+  let closeTime: string | null = null;
+  let dayClosed = false;
+  let specialNote: string | null = null;
 
-  // Volledige sluitingsdag (bv. donderdag of zondag)
-  if (!today || today.isClosed || !today.openTime || !today.closeTime) {
+  if (
+    special &&
+    !special.fullyClosed &&
+    special.openTime &&
+    special.closeTime
+  ) {
+    openTime = special.openTime;
+    closeTime = special.closeTime;
+    specialNote = special.note || special.title;
+  } else {
+    const today = hours.find((h) => h.dayOfWeek === now.dayOfWeek);
+    if (!today || today.isClosed || !today.openTime || !today.closeTime) {
+      dayClosed = true;
+    } else {
+      openTime = today.openTime;
+      closeTime = today.closeTime;
+    }
+  }
+
+  if (dayClosed || !openTime || !closeTime) {
     return {
       isOpen: false,
       label: "Gesloten",
       detail: "Vandaag gesloten",
       closure: null,
+      specialHours: null,
     };
   }
 
-  const [oh, om] = today.openTime.split(":").map(Number);
-  const [ch, cm] = today.closeTime.split(":").map(Number);
+  const [oh, om] = openTime.split(":").map(Number);
+  const [ch, cm] = closeTime.split(":").map(Number);
   const openMins = oh * 60 + om;
   const closeMins = ch * 60 + cm;
   const isOpen = now.mins >= openMins && now.mins < closeMins;
 
   let detail: string;
   if (isOpen) {
-    detail = `Tot ${today.closeTime}`;
+    detail = specialNote
+      ? `Tot ${closeTime} (${specialNote})`
+      : `Tot ${closeTime}`;
   } else if (now.mins < openMins) {
-    detail = `Opent om ${today.openTime}`;
+    detail = specialNote
+      ? `Opent om ${openTime} (${specialNote})`
+      : `Opent om ${openTime}`;
   } else {
-    // Na sluitingstijd op een dag dat de winkel wél open was
-    detail = `Was open tot ${today.closeTime}`;
+    detail = specialNote
+      ? `Was open tot ${closeTime} (${specialNote})`
+      : `Was open tot ${closeTime}`;
   }
 
   return {
@@ -182,6 +216,9 @@ export function computeOpenStatus(
     label: isOpen ? "Nu open" : "Gesloten",
     detail,
     closure: null,
+    specialHours: special && !special.fullyClosed
+      ? { openTime, closeTime }
+      : null,
   };
 }
 
@@ -211,4 +248,16 @@ export function formatDateRange(start: Date, end: Date) {
     return format(start, "d MMMM yyyy", { locale: nl });
   }
   return `${format(start, "d MMM", { locale: nl })} – ${format(end, "d MMM yyyy", { locale: nl })}`;
+}
+
+export function formatSpecialDayLine(c: SpecialDay) {
+  const range = formatDateRange(c.startDate, c.endDate);
+  if (c.fullyClosed) {
+    return `${c.title}: ${range} — gesloten${c.note ? ` (${c.note})` : ""}`;
+  }
+  const hours =
+    c.openTime && c.closeTime
+      ? `${c.openTime} – ${c.closeTime}`
+      : "aangepaste uren";
+  return `${c.title}: ${range} — ${hours}${c.note ? ` (${c.note})` : ""}`;
 }

@@ -54,6 +54,12 @@ export async function updateSettingsAction(formData: FormData) {
     "heroSubtitle",
     "aboutText",
     "noticeText",
+    "servicesMainTitle",
+    "servicesMainSubtitle",
+    "servicesCourierTitle",
+    "servicesCourierSubtitle",
+    "servicesExtraTitle",
+    "servicesExtraSubtitle",
   ] as const;
 
   const data: Record<string, string | null> = {};
@@ -167,9 +173,19 @@ export async function createClosureAction(formData: FormData) {
   const startDate = String(formData.get("startDate") || "");
   const endDate = String(formData.get("endDate") || "");
   const note = String(formData.get("note") || "").trim() || null;
+  const mode = String(formData.get("mode") || "closed"); // closed | hours
+  const fullyClosed = mode !== "hours";
+  const openTime = String(formData.get("openTime") || "") || null;
+  const closeTime = String(formData.get("closeTime") || "") || null;
 
   if (!title || !startDate || !endDate) {
     redirect("/admin/hours?error=Vul+alle+verplichte+velden+in");
+  }
+
+  if (!fullyClosed && (!openTime || !closeTime)) {
+    redirect(
+      "/admin/hours?error=Vul+open-+en+sluituur+in+voor+aangepaste+uren",
+    );
   }
 
   await prisma.specialClosure.create({
@@ -178,6 +194,9 @@ export async function createClosureAction(formData: FormData) {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
       note,
+      fullyClosed,
+      openTime: fullyClosed ? null : openTime,
+      closeTime: fullyClosed ? null : closeTime,
     },
   });
 

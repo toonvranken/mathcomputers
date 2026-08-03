@@ -1,6 +1,6 @@
 import { MapPin, Phone, Clock } from "lucide-react";
 import type { OpeningHours, SiteSettings, SpecialClosure } from "@prisma/client";
-import { formatHoursSummary, formatDateRange } from "@/lib/site";
+import { formatHoursSummary, formatSpecialDayLine } from "@/lib/site";
 import Link from "next/link";
 import { SafeEmail } from "@/components/SafeEmail";
 
@@ -81,13 +81,10 @@ export function ContactCard({
           </ul>
           {closures.length > 0 && (
             <div className="mt-3 rounded-lg bg-amber-50 p-3 text-xs text-amber-900 ring-1 ring-amber-200">
-              <div className="font-semibold">Extra sluiting / verlof</div>
+              <div className="font-semibold">Uitzonderingen / verlof</div>
               <ul className="mt-1 space-y-1">
                 {closures.map((c) => (
-                  <li key={c.id}>
-                    {c.title}: {formatDateRange(c.startDate, c.endDate)}
-                    {c.note ? ` — ${c.note}` : ""}
-                  </li>
+                  <li key={c.id}>{formatSpecialDayLine(c)}</li>
                 ))}
               </ul>
             </div>

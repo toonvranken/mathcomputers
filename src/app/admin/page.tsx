@@ -49,7 +49,7 @@ export default async function AdminDashboard() {
       label: "Instellingen",
       value: "Links & teksten",
       icon: Settings,
-      hint: "TeamViewer, E-Shop, adres, …",
+      hint: "TeamViewer, Webwinkel, adres, …",
     },
   ];
 

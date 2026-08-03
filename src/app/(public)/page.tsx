@@ -76,7 +76,7 @@ export default async function HomePage() {
               href={settings.eshopUrl}
               external
               icon={<ShoppingBag className="h-5 w-5" />}
-              title="E-Shop"
+              title="Webwinkel"
               text="Producten en servicepassen in onze webshop."
             />
             <QuickCard
@@ -122,8 +122,8 @@ export default async function HomePage() {
 
             <ServiceGrid
               services={main}
-              title="Onze diensten"
-              subtitle="Van herstelling tot datarecuperatie — duidelijk en lokaal."
+              title={settings.servicesMainTitle}
+              subtitle={settings.servicesMainSubtitle}
             />
           </div>
 
@@ -137,14 +137,14 @@ export default async function HomePage() {
 
         <ServiceGrid
           services={couriers}
-          title="Pakketjes verzenden of afhalen"
-          subtitle="Breng het binnen of kom het ophalen bij MathComputers."
+          title={settings.servicesCourierTitle}
+          subtitle={settings.servicesCourierSubtitle}
         />
 
         <ServiceGrid
           services={extras}
-          title="Extra in de winkel"
-          subtitle="Meer dan computers — handige diensten onder één dak."
+          title={settings.servicesExtraTitle}
+          subtitle={settings.servicesExtraSubtitle}
         />
 
         {/* CTA band */}

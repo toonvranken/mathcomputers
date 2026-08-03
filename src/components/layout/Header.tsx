@@ -60,7 +60,7 @@ export function Header({ settings }: { settings: SiteSettings }) {
             rel="noopener noreferrer"
             className="ml-1 inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-brand-light hover:text-brand"
           >
-            E-Shop <ExternalLink className="h-3.5 w-3.5" />
+            Webwinkel <ExternalLink className="h-3.5 w-3.5" />
           </a>
         </nav>
 
@@ -93,7 +93,7 @@ export function Header({ settings }: { settings: SiteSettings }) {
               rel="noopener noreferrer"
               className="rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-light"
             >
-              E-Shop ↗
+              Webwinkel ↗
             </a>
           </div>
         </div>

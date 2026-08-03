@@ -34,18 +34,18 @@ export default async function DienstenPage() {
         <div className="space-y-12">
           <ServiceGrid
             services={main}
-            title="ICT & herstellingen"
-            subtitle="In de winkel, online of ter plaatse — altijd in overleg."
+            title={settings.servicesMainTitle}
+            subtitle={settings.servicesMainSubtitle}
           />
           <ServiceGrid
             services={couriers}
-            title="Pakketpunten & koeriers"
-            subtitle="GLS, PostNL, Homerr en andere diensten die u beheert."
+            title={settings.servicesCourierTitle}
+            subtitle={settings.servicesCourierSubtitle}
           />
           <ServiceGrid
             services={extras}
-            title="Extra diensten"
-            subtitle="Zoals Nationale Loterij en andere winkel­aanbiedingen."
+            title={settings.servicesExtraTitle}
+            subtitle={settings.servicesExtraSubtitle}
           />
         </div>
         <ContactCard

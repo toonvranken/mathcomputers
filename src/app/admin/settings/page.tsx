@@ -19,8 +19,8 @@ export default async function AdminSettingsPage({
       <div>
         <h1 className="text-2xl font-bold">Instellingen</h1>
         <p className="mt-1 text-sm text-muted">
-          Adres, telefoon, externe links (E-Shop, TeamViewer, herstelstatus) en
-          teksten op de homepage.
+          Adres, telefoon, externe links (Webwinkel, TeamViewer, herstelstatus),
+          homepage- en dienstensectie-teksten.
         </p>
       </div>
       <Flash ok={params.ok} error={params.error} />
@@ -47,7 +47,7 @@ export default async function AdminSettingsPage({
           <Field name="serviceRequestUrl" label="Nieuwe service-aanvraag" defaultValue={s.serviceRequestUrl} className="sm:col-span-2" />
           <Field name="repairStatusUrl" label="Status herstelling" defaultValue={s.repairStatusUrl} className="sm:col-span-2" />
           <Field name="customerPortalUrl" label="Klantenportaal" defaultValue={s.customerPortalUrl} className="sm:col-span-2" />
-          <Field name="eshopUrl" label="E-Shop" defaultValue={s.eshopUrl} className="sm:col-span-2" />
+          <Field name="eshopUrl" label="Webwinkel (URL)" defaultValue={s.eshopUrl} className="sm:col-span-2" />
           <Field name="dataRecoveryUrl" label="Datarecuperatie" defaultValue={s.dataRecoveryUrl || ""} className="sm:col-span-2" />
           <Field name="facebookUrl" label="Facebook" defaultValue={s.facebookUrl || ""} className="sm:col-span-2" />
         </fieldset>
@@ -84,6 +84,53 @@ export default async function AdminSettingsPage({
               className="w-full rounded-xl border border-border px-3 py-2"
             />
           </label>
+        </fieldset>
+
+        <fieldset className="grid gap-3 sm:grid-cols-2">
+          <legend className="mb-2 text-lg font-semibold sm:col-span-2">
+            Dienstensecties (home &amp; dienstenpagina)
+          </legend>
+          <Field
+            name="servicesMainTitle"
+            label="Diensten — titel"
+            defaultValue={s.servicesMainTitle || "Onze diensten"}
+          />
+          <Field
+            name="servicesMainSubtitle"
+            label="Diensten — ondertitel"
+            defaultValue={
+              s.servicesMainSubtitle ||
+              "Van herstelling tot datarecuperatie — duidelijk en lokaal."
+            }
+          />
+          <Field
+            name="servicesCourierTitle"
+            label="Pakketpunten &amp; koeriers — titel"
+            defaultValue={
+              s.servicesCourierTitle || "Pakketjes verzenden of afhalen"
+            }
+          />
+          <Field
+            name="servicesCourierSubtitle"
+            label="Pakketpunten &amp; koeriers — ondertitel"
+            defaultValue={
+              s.servicesCourierSubtitle ||
+              "Breng het binnen of kom het ophalen bij MathComputers."
+            }
+          />
+          <Field
+            name="servicesExtraTitle"
+            label="Extra diensten — titel"
+            defaultValue={s.servicesExtraTitle || "Extra in de winkel"}
+          />
+          <Field
+            name="servicesExtraSubtitle"
+            label="Extra diensten — ondertitel"
+            defaultValue={
+              s.servicesExtraSubtitle ||
+              "Meer dan computers — handige diensten onder één dak."
+            }
+          />
         </fieldset>
 
         <button

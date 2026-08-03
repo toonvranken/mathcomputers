@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MapPin, Phone, Clock } from "lucide-react";
 import type { OpeningHours, SiteSettings, SpecialClosure } from "@prisma/client";
-import { formatHoursSummary, formatDateRange } from "@/lib/site";
+import { formatHoursSummary, formatSpecialDayLine } from "@/lib/site";
 import { SafeEmail } from "@/components/SafeEmail";
 
 export function Footer({
@@ -87,15 +87,10 @@ export function Footer({
           </ul>
           {closures.length > 0 && (
             <div className="mt-4 rounded-lg bg-amber-500/10 p-3 text-xs text-amber-200 ring-1 ring-amber-500/30">
-              <div className="mb-1 font-semibold">Extra sluiting / verlof</div>
+              <div className="mb-1 font-semibold">Uitzonderingen / verlof</div>
               <ul className="space-y-1">
                 {closures.map((c) => (
-                  <li key={c.id}>
-                    <strong>{c.title}</strong>
-                    <br />
-                    {formatDateRange(c.startDate, c.endDate)}
-                    {c.note ? ` — ${c.note}` : ""}
-                  </li>
+                  <li key={c.id}>{formatSpecialDayLine(c)}</li>
                 ))}
               </ul>
             </div>
@@ -129,7 +124,7 @@ export function Footer({
                 rel="noopener noreferrer"
                 className="hover:text-accent"
               >
-                E-Shop
+                Webwinkel
               </a>
             </li>
             <li>
