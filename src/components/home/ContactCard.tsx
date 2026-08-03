@@ -24,10 +24,7 @@ export function ContactCard({
   todayKey?: string;
 }) {
   const hoursList = formatHoursSummary(hours);
-  const spotlight =
-    highlightedExceptions.length > 0
-      ? highlightedExceptions
-      : closures.filter(() => false);
+  const spotlight = highlightedExceptions;
 
   return (
     <aside className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
