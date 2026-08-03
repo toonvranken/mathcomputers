@@ -19,18 +19,19 @@ export default async function ContactPage() {
     <div className="mx-auto max-w-6xl px-4 py-10 lg:py-14">
       <div className="max-w-2xl">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Contact
+          {settings.pageContactTitle}
         </h1>
-        <p className="mt-3 text-muted">
-          Stuur ons een bericht, bel ons, of kom langs in de winkel. Adres,
-          telefoon en openingsuren staan altijd duidelijk vermeld.
+        <p className="mt-3 text-muted whitespace-pre-line">
+          {settings.pageContactIntro}
         </p>
       </div>
 
       <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_340px]">
         <div className="space-y-8">
           <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
-            <h2 className="mb-4 text-xl font-bold">Stuur een bericht</h2>
+            <h2 className="mb-4 text-xl font-bold">
+              {settings.pageContactFormTitle}
+            </h2>
             <ContactForm />
           </div>
 

@@ -21,12 +21,10 @@ export default async function DienstenPage() {
     <div className="mx-auto max-w-6xl space-y-12 px-4 py-10 lg:py-14">
       <div>
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Diensten
+          {settings.pageDienstenTitle}
         </h1>
-        <p className="mt-3 max-w-2xl text-muted">
-          Alles wat we aanbieden — herstellingen, support, datarecuperatie,
-          koeriers en extra winkel­diensten. De inhoud van deze kaarten kan via
-          het adminpaneel worden aangepast.
+        <p className="mt-3 max-w-2xl text-muted whitespace-pre-line">
+          {settings.pageDienstenIntro}
         </p>
       </div>
 

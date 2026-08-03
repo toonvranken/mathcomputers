@@ -57,6 +57,15 @@ model SiteSettings {
   servicesCourierSubtitle String @default("Breng het binnen of kom het ophalen bij MathComputers.")
   servicesExtraTitle      String @default("Extra in de winkel")
   servicesExtraSubtitle   String @default("Meer dan computers — handige diensten onder één dak.")
+  // Pagina-intro's (titel + ondertitel/intro)
+  pageDienstenTitle   String @default("Diensten")
+  pageDienstenIntro   String @default("Alles wat we aanbieden — herstellingen, support, datarecuperatie, koeriers en extra winkeldiensten.")
+  pageSupportTitle    String @default("Support nodig?")
+  pageSupportIntro    String @default("Gebruik bij voorkeur onderstaande kanalen. Telefonische support zorgt vaak voor vertraging en kan extra kosten meebrengen.")
+  pageSupportNotice   String @default("Onze winkel is toegankelijk zonder afspraak. Wil je sneller geholpen worden? Meld je herstelling aan of start online support. Wegens drukte bieden we geen onmiddellijke telefonische support aan.")
+  pageContactTitle    String @default("Contact")
+  pageContactIntro    String @default("Stuur ons een bericht, bel ons, of kom langs in de winkel. Adres, telefoon en openingsuren staan altijd duidelijk vermeld.")
+  pageContactFormTitle String @default("Stuur een bericht")
 }
 
 model OpeningHours {

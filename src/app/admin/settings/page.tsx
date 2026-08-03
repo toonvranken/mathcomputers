@@ -19,8 +19,8 @@ export default async function AdminSettingsPage({
       <div>
         <h1 className="text-2xl font-bold">Instellingen</h1>
         <p className="mt-1 text-sm text-muted">
-          Adres, telefoon, externe links (Webwinkel, TeamViewer, herstelstatus),
-          homepage- en dienstensectie-teksten.
+          Adres, telefoon, links, homepage, dienstensecties en pagina-intro&apos;s
+          (Diensten, Support, Contact).
         </p>
       </div>
       <Flash ok={params.ok} error={params.error} />
@@ -130,6 +130,94 @@ export default async function AdminSettingsPage({
               s.servicesExtraSubtitle ||
               "Meer dan computers — handige diensten onder één dak."
             }
+          />
+        </fieldset>
+
+        <fieldset className="grid gap-3">
+          <legend className="mb-2 text-lg font-semibold">
+            Pagina Diensten
+          </legend>
+          <Field
+            name="pageDienstenTitle"
+            label="Titel (H1)"
+            defaultValue={s.pageDienstenTitle || "Diensten"}
+          />
+          <label className="text-sm">
+            <span className="mb-1 block font-medium">Intro / ondertitel</span>
+            <textarea
+              name="pageDienstenIntro"
+              rows={3}
+              defaultValue={
+                s.pageDienstenIntro ||
+                "Alles wat we aanbieden — herstellingen, support, datarecuperatie, koeriers en extra winkeldiensten."
+              }
+              className="w-full rounded-xl border border-border px-3 py-2"
+            />
+          </label>
+        </fieldset>
+
+        <fieldset className="grid gap-3">
+          <legend className="mb-2 text-lg font-semibold">
+            Pagina Support
+          </legend>
+          <Field
+            name="pageSupportTitle"
+            label="Titel (H1)"
+            defaultValue={s.pageSupportTitle || "Support nodig?"}
+          />
+          <label className="text-sm">
+            <span className="mb-1 block font-medium">Intro / ondertitel</span>
+            <textarea
+              name="pageSupportIntro"
+              rows={3}
+              defaultValue={
+                s.pageSupportIntro ||
+                "Gebruik bij voorkeur onderstaande kanalen. Telefonische support zorgt vaak voor vertraging en kan extra kosten meebrengen."
+              }
+              className="w-full rounded-xl border border-border px-3 py-2"
+            />
+          </label>
+          <label className="text-sm">
+            <span className="mb-1 block font-medium">
+              Infobalk (oranje melding)
+            </span>
+            <textarea
+              name="pageSupportNotice"
+              rows={3}
+              defaultValue={
+                s.pageSupportNotice ||
+                "Onze winkel is toegankelijk zonder afspraak. Wil je sneller geholpen worden? Meld je herstelling aan of start online support. Wegens drukte bieden we geen onmiddellijke telefonische support aan."
+              }
+              className="w-full rounded-xl border border-border px-3 py-2"
+            />
+          </label>
+        </fieldset>
+
+        <fieldset className="grid gap-3">
+          <legend className="mb-2 text-lg font-semibold">
+            Pagina Contact
+          </legend>
+          <Field
+            name="pageContactTitle"
+            label="Titel (H1)"
+            defaultValue={s.pageContactTitle || "Contact"}
+          />
+          <label className="text-sm">
+            <span className="mb-1 block font-medium">Intro / ondertitel</span>
+            <textarea
+              name="pageContactIntro"
+              rows={3}
+              defaultValue={
+                s.pageContactIntro ||
+                "Stuur ons een bericht, bel ons, of kom langs in de winkel. Adres, telefoon en openingsuren staan altijd duidelijk vermeld."
+              }
+              className="w-full rounded-xl border border-border px-3 py-2"
+            />
+          </label>
+          <Field
+            name="pageContactFormTitle"
+            label="Titel boven formulier"
+            defaultValue={s.pageContactFormTitle || "Stuur een bericht"}
           />
         </fieldset>
 

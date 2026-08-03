@@ -60,6 +60,14 @@ export async function updateSettingsAction(formData: FormData) {
     "servicesCourierSubtitle",
     "servicesExtraTitle",
     "servicesExtraSubtitle",
+    "pageDienstenTitle",
+    "pageDienstenIntro",
+    "pageSupportTitle",
+    "pageSupportIntro",
+    "pageSupportNotice",
+    "pageContactTitle",
+    "pageContactIntro",
+    "pageContactFormTitle",
   ] as const;
 
   const data: Record<string, string | null> = {};

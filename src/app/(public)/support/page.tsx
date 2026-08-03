@@ -57,24 +57,21 @@ export default async function SupportPage() {
     <div className="mx-auto max-w-6xl px-4 py-10 lg:py-14">
       <div className="max-w-2xl">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Support nodig?
+          {settings.pageSupportTitle}
         </h1>
-        <p className="mt-3 text-muted">
-          Gebruik bij voorkeur onderstaande kanalen. Telefonische support zorgt
-          vaak voor vertraging en kan extra kosten meebrengen.
+        <p className="mt-3 text-muted whitespace-pre-line">
+          {settings.pageSupportIntro}
         </p>
       </div>
 
-      <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
-        <div className="flex gap-2">
-          <Info className="mt-0.5 h-4 w-4 shrink-0" />
-          <p>
-            Onze winkel is toegankelijk zonder afspraak. Wil je sneller geholpen
-            worden? Meld je herstelling aan of start online support. Wegens
-            drukte bieden we geen onmiddellijke telefonische support aan.
-          </p>
+      {settings.pageSupportNotice ? (
+        <div className="mt-8 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
+          <div className="flex gap-2">
+            <Info className="mt-0.5 h-4 w-4 shrink-0" />
+            <p className="whitespace-pre-line">{settings.pageSupportNotice}</p>
+          </div>
         </div>
-      </div>
+      ) : null}
 
       <div className="mt-10 grid gap-5 sm:grid-cols-2">
         {cards.map((card) => (
