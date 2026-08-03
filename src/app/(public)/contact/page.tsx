@@ -10,7 +10,14 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const { settings, hours, closures, openStatus } = await getSiteData();
+  const {
+    settings,
+    hours,
+    closures,
+    openStatus,
+    highlightedExceptions,
+    todayKey,
+  } = await getSiteData();
   const mapsQuery = encodeURIComponent(
     `${settings.address}, ${settings.postalCode} ${settings.city}`,
   );
@@ -51,6 +58,8 @@ export default async function ContactPage() {
           hours={hours}
           closures={closures}
           openStatus={openStatus}
+          highlightedExceptions={highlightedExceptions}
+          todayKey={todayKey}
         />
       </div>
     </div>

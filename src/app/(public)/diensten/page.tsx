@@ -10,8 +10,15 @@ export const metadata: Metadata = {
 };
 
 export default async function DienstenPage() {
-  const { settings, hours, closures, services, openStatus } =
-    await getSiteData();
+  const {
+    settings,
+    hours,
+    closures,
+    services,
+    openStatus,
+    highlightedExceptions,
+    todayKey,
+  } = await getSiteData();
 
   const main = services.filter((s) => s.category === "MAIN");
   const couriers = services.filter((s) => s.category === "COURIER");
@@ -51,6 +58,8 @@ export default async function DienstenPage() {
           hours={hours}
           closures={closures}
           openStatus={openStatus}
+          highlightedExceptions={highlightedExceptions}
+          todayKey={todayKey}
         />
       </div>
     </div>

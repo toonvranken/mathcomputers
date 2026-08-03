@@ -94,6 +94,91 @@ function isActiveOnDay(c: SpecialDay, dateKey: string) {
   return dateKey >= startKey && dateKey <= endKey;
 }
 
+/** Verschuif yyyy-MM-dd met N dagen (kalender, via middag-UTC). */
+export function shiftDateKey(dateKey: string, deltaDays: number): string {
+  const [y, m, d] = dateKey.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+  dt.setUTCDate(dt.getUTCDate() + deltaDays);
+  return dt.toISOString().slice(0, 10);
+}
+
+/**
+ * Zichtbaar: de dag vóór de start t.e.m. de laatste dag van de uitzondering.
+ * Zo ziet men het op voorhand en tijdens de periode.
+ */
+export function isInHighlightWindow(c: SpecialDay, todayKey: string): boolean {
+  const start = toBrusselsDateKey(c.startDate);
+  const end = toBrusselsDateKey(c.endDate);
+  const dayBeforeStart = shiftDateKey(start, -1);
+  return todayKey >= dayBeforeStart && todayKey <= end;
+}
+
+export type ExceptionUrgency = "tomorrow" | "active";
+
+export function getExceptionUrgency(
+  c: SpecialDay,
+  todayKey: string,
+): ExceptionUrgency | null {
+  const start = toBrusselsDateKey(c.startDate);
+  const end = toBrusselsDateKey(c.endDate);
+  if (todayKey >= start && todayKey <= end) return "active";
+  if (todayKey === shiftDateKey(start, -1)) return "tomorrow";
+  return null;
+}
+
+/** Korte, duidelijke melding voor banner / kaarten. */
+export function formatExceptionAlert(
+  c: SpecialDay,
+  todayKey: string,
+): string {
+  const urgency = getExceptionUrgency(c, todayKey);
+  const note = c.note ? ` — ${c.note}` : "";
+  const range = formatDateRange(c.startDate, c.endDate);
+  const multi = toBrusselsDateKey(c.startDate) !== toBrusselsDateKey(c.endDate);
+
+  if (c.fullyClosed) {
+    if (urgency === "tomorrow") {
+      return multi
+        ? `Let op: morgen start sluiting (${range}) — ${c.title}${note}`
+        : `Let op: morgen gesloten — ${c.title}${note}`;
+    }
+    if (urgency === "active") {
+      return multi
+        ? `Nu gesloten t.e.m. ${format(c.endDate, "d MMMM yyyy", { locale: nl })} — ${c.title}${note}`
+        : `Vandaag gesloten — ${c.title}${note}`;
+    }
+  } else {
+    const hours =
+      c.openTime && c.closeTime
+        ? `${c.openTime} – ${c.closeTime}`
+        : "aangepaste uren";
+    if (urgency === "tomorrow") {
+      return multi
+        ? `Let op: morgen starten aangepaste uren (${hours}, ${range}) — ${c.title}${note}`
+        : `Let op: morgen aangepaste uren ${hours} — ${c.title}${note}`;
+    }
+    if (urgency === "active") {
+      return multi
+        ? `Aangepaste uren ${hours} (t.e.m. ${format(c.endDate, "d MMM", { locale: nl })}) — ${c.title}${note}`
+        : `Vandaag aangepaste uren ${hours} — ${c.title}${note}`;
+    }
+  }
+
+  return formatSpecialDayLine(c);
+}
+
+export function formatSpecialDayLine(c: SpecialDay) {
+  const range = formatDateRange(c.startDate, c.endDate);
+  if (c.fullyClosed) {
+    return `${c.title}: ${range} — gesloten${c.note ? ` (${c.note})` : ""}`;
+  }
+  const hours =
+    c.openTime && c.closeTime
+      ? `${c.openTime} – ${c.closeTime}`
+      : "aangepaste uren";
+  return `${c.title}: ${range} — ${hours}${c.note ? ` (${c.note})` : ""}`;
+}
+
 export async function getSiteData() {
   const brussels = getBrusselsNow();
 
@@ -118,14 +203,22 @@ export async function getSiteData() {
     );
   }
 
-  const visibleClosures = closures.filter(
+  // Alle toekomstige/huidige uitzonderingen (footer e.d. verderop)
+  const upcomingClosures = closures.filter(
     (c) => toBrusselsDateKey(c.endDate) >= brussels.dateKey,
+  );
+
+  // Extra zichtbaar: dag vóór start + alle dagen van de uitzondering
+  const highlightedExceptions = upcomingClosures.filter((c) =>
+    isInHighlightWindow(c, brussels.dateKey),
   );
 
   return {
     settings,
     hours,
-    closures: visibleClosures,
+    closures: upcomingClosures,
+    highlightedExceptions,
+    todayKey: brussels.dateKey,
     services,
     openStatus: computeOpenStatus(hours, closures),
   };
@@ -248,16 +341,4 @@ export function formatDateRange(start: Date, end: Date) {
     return format(start, "d MMMM yyyy", { locale: nl });
   }
   return `${format(start, "d MMM", { locale: nl })} – ${format(end, "d MMM yyyy", { locale: nl })}`;
-}
-
-export function formatSpecialDayLine(c: SpecialDay) {
-  const range = formatDateRange(c.startDate, c.endDate);
-  if (c.fullyClosed) {
-    return `${c.title}: ${range} — gesloten${c.note ? ` (${c.note})` : ""}`;
-  }
-  const hours =
-    c.openTime && c.closeTime
-      ? `${c.openTime} – ${c.closeTime}`
-      : "aangepaste uren";
-  return `${c.title}: ${range} — ${hours}${c.note ? ` (${c.note})` : ""}`;
 }

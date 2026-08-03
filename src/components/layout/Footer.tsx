@@ -1,19 +1,29 @@
 import Link from "next/link";
 import { MapPin, Phone, Clock } from "lucide-react";
 import type { OpeningHours, SiteSettings, SpecialClosure } from "@prisma/client";
-import { formatHoursSummary, formatSpecialDayLine } from "@/lib/site";
+import {
+  formatHoursSummary,
+  formatExceptionAlert,
+  formatSpecialDayLine,
+  type SpecialDay,
+} from "@/lib/site";
 import { SafeEmail } from "@/components/SafeEmail";
 
 export function Footer({
   settings,
   hours,
   closures,
+  highlightedExceptions = [],
+  todayKey = "",
 }: {
   settings: SiteSettings;
   hours: OpeningHours[];
   closures: SpecialClosure[];
+  highlightedExceptions?: SpecialDay[];
+  todayKey?: string;
 }) {
   const hoursList = formatHoursSummary(hours);
+  const highlightIds = new Set(highlightedExceptions.map((e) => e.id));
 
   return (
     <footer className="mt-auto border-t border-border bg-slate-900 text-slate-200">
@@ -85,13 +95,31 @@ export function Footer({
               </li>
             ))}
           </ul>
-          {closures.length > 0 && (
-            <div className="mt-4 rounded-lg bg-amber-500/10 p-3 text-xs text-amber-200 ring-1 ring-amber-500/30">
-              <div className="mb-1 font-semibold">Uitzonderingen / verlof</div>
-              <ul className="space-y-1">
-                {closures.map((c) => (
-                  <li key={c.id}>{formatSpecialDayLine(c)}</li>
+          {highlightedExceptions.length > 0 && (
+            <div className="mt-4 rounded-lg bg-amber-400 p-3 text-xs font-semibold text-slate-900 ring-2 ring-amber-200">
+              <div className="mb-1 font-bold uppercase tracking-wide">
+                Let op: openingsuren
+              </div>
+              <ul className="space-y-1.5 font-medium">
+                {highlightedExceptions.map((c) => (
+                  <li key={c.id}>
+                    {todayKey
+                      ? formatExceptionAlert(c, todayKey)
+                      : formatSpecialDayLine(c)}
+                  </li>
                 ))}
+              </ul>
+            </div>
+          )}
+          {closures.some((c) => !highlightIds.has(c.id)) && (
+            <div className="mt-3 rounded-lg bg-amber-500/10 p-3 text-xs text-amber-200 ring-1 ring-amber-500/30">
+              <div className="mb-1 font-semibold">Later gepland</div>
+              <ul className="space-y-1">
+                {closures
+                  .filter((c) => !highlightIds.has(c.id))
+                  .map((c) => (
+                    <li key={c.id}>{formatSpecialDayLine(c)}</li>
+                  ))}
               </ul>
             </div>
           )}

@@ -1,6 +1,10 @@
 import { MapPin, Phone, Clock } from "lucide-react";
-import type { OpeningHours, SiteSettings, SpecialClosure } from "@prisma/client";
-import { formatHoursSummary, formatSpecialDayLine } from "@/lib/site";
+import type { OpeningHours, SiteSettings } from "@prisma/client";
+import {
+  formatHoursSummary,
+  formatExceptionAlert,
+  type SpecialDay,
+} from "@/lib/site";
 import Link from "next/link";
 import { SafeEmail } from "@/components/SafeEmail";
 
@@ -9,13 +13,21 @@ export function ContactCard({
   hours,
   closures,
   openStatus,
+  highlightedExceptions = [],
+  todayKey = "",
 }: {
   settings: SiteSettings;
   hours: OpeningHours[];
-  closures: SpecialClosure[];
+  closures: SpecialDay[];
   openStatus: { isOpen: boolean; label: string; detail: string };
+  highlightedExceptions?: SpecialDay[];
+  todayKey?: string;
 }) {
   const hoursList = formatHoursSummary(hours);
+  const spotlight =
+    highlightedExceptions.length > 0
+      ? highlightedExceptions
+      : closures.filter(() => false);
 
   return (
     <aside className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
@@ -79,12 +91,16 @@ export function ContactCard({
               </li>
             ))}
           </ul>
-          {closures.length > 0 && (
-            <div className="mt-3 rounded-lg bg-amber-50 p-3 text-xs text-amber-900 ring-1 ring-amber-200">
-              <div className="font-semibold">Uitzonderingen / verlof</div>
-              <ul className="mt-1 space-y-1">
-                {closures.map((c) => (
-                  <li key={c.id}>{formatSpecialDayLine(c)}</li>
+          {spotlight.length > 0 && (
+            <div className="mt-3 rounded-lg bg-red-50 p-3 text-xs font-medium text-red-950 ring-2 ring-red-300">
+              <div className="font-bold">Let op: openingsuren</div>
+              <ul className="mt-1.5 space-y-1.5">
+                {spotlight.map((c) => (
+                  <li key={c.id}>
+                    {todayKey
+                      ? formatExceptionAlert(c, todayKey)
+                      : c.title}
+                  </li>
                 ))}
               </ul>
             </div>

@@ -12,8 +12,15 @@ import { ServiceGrid } from "@/components/home/ServiceGrid";
 import { TeamViewerIcon } from "@/components/icons/TeamViewerIcon";
 
 export default async function HomePage() {
-  const { settings, hours, closures, services, openStatus } =
-    await getSiteData();
+  const {
+    settings,
+    hours,
+    closures,
+    services,
+    openStatus,
+    highlightedExceptions,
+    todayKey,
+  } = await getSiteData();
 
   const main = services.filter((s) => s.category === "MAIN");
   const couriers = services.filter((s) => s.category === "COURIER");
@@ -132,6 +139,8 @@ export default async function HomePage() {
             hours={hours}
             closures={closures}
             openStatus={openStatus}
+            highlightedExceptions={highlightedExceptions}
+            todayKey={todayKey}
           />
         </div>
 
