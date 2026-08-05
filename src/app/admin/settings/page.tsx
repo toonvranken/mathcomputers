@@ -44,6 +44,12 @@ export default async function AdminSettingsPage({
         <fieldset className="grid gap-3 sm:grid-cols-2">
           <legend className="mb-2 text-lg font-semibold">Externe tools & links</legend>
           <Field name="teamviewerUrl" label="TeamViewer Online Support" defaultValue={s.teamviewerUrl} className="sm:col-span-2" />
+          <Field
+            name="mcSupportUrl"
+            label="MathComputers Support (test-tool URL)"
+            defaultValue={s.mcSupportUrl || "https://support.mathcomputers.be/"}
+            className="sm:col-span-2"
+          />
           <Field name="serviceRequestUrl" label="Nieuwe service-aanvraag" defaultValue={s.serviceRequestUrl} className="sm:col-span-2" />
           <Field name="repairStatusUrl" label="Status herstelling" defaultValue={s.repairStatusUrl} className="sm:col-span-2" />
           <Field name="customerPortalUrl" label="Klantenportaal" defaultValue={s.customerPortalUrl} className="sm:col-span-2" />

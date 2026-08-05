@@ -40,6 +40,8 @@ model SiteSettings {
   vatNumber         String  @default("BE0872633477")
   logoPath          String?
   teamviewerUrl     String  @default("https://get.teamviewer.com/MathComputersSupport")
+  /// Eigen remote support (toon-support fork) — test tot TeamViewer eventueel vervangen wordt
+  mcSupportUrl      String  @default("https://support.mathcomputers.be/")
   eshopUrl          String  @default("https://www.mathcomputers.exellent-it.be/nl")
   repairStatusUrl   String  @default("https://mathcomputers.repairshopr.com/my_profile")
   serviceRequestUrl String  @default("https://mathcomputers.repairshopr.com/wf/mail-in-widget-flow/start")

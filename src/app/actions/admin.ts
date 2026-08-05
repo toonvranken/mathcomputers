@@ -44,6 +44,7 @@ export async function updateSettingsAction(formData: FormData) {
     "email",
     "vatNumber",
     "teamviewerUrl",
+    "mcSupportUrl",
     "eshopUrl",
     "repairStatusUrl",
     "serviceRequestUrl",

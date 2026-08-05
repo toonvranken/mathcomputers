@@ -137,6 +137,27 @@ export default async function SupportPage() {
           </Link>
         </div>
       </div>
+
+      {/* Subtiele test: eigen remote-support (later eventueel i.p.v. TeamViewer) */}
+      {settings.mcSupportUrl ? (
+        <div className="mt-10 rounded-xl border border-dashed border-slate-300 bg-slate-50/80 px-4 py-3 text-center text-xs text-muted">
+          <span className="mr-1 rounded bg-slate-200 px-1.5 py-0.5 font-semibold uppercase tracking-wide text-slate-600">
+            Test
+          </span>
+          <a
+            href={settings.mcSupportUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-brand underline-offset-2 hover:underline"
+          >
+            MathComputers Support
+          </a>
+          <span className="text-slate-500">
+            {" "}
+            — experimentele hulp op afstand (eigen tool)
+          </span>
+        </div>
+      ) : null}
     </div>
   );
 }
