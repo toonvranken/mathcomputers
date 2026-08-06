@@ -1,6 +1,7 @@
 import { auth, signIn } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = { title: "Inloggen" };
 
@@ -35,9 +36,14 @@ export default async function LoginPage({
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
       <div className="w-full max-w-md rounded-2xl border border-border bg-white p-8 shadow-sm">
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-brand text-sm font-bold text-white">
-            MC
-          </div>
+          <Image
+            src="/mathcomputers-logo.png"
+            alt="MathComputers"
+            width={180}
+            height={120}
+            className="mx-auto mb-3 h-16 w-auto object-contain"
+            priority
+          />
           <h1 className="text-xl font-bold">Beheer inloggen</h1>
           <p className="mt-1 text-sm text-muted">
             Alleen voor MathComputers-medewerkers

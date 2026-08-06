@@ -20,28 +20,14 @@ export function Header({ settings }: { settings: SiteSettings }) {
     <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-3">
-          {settings.logoPath ? (
-            <Image
-              src={settings.logoPath}
-              alt={settings.businessName}
-              width={160}
-              height={48}
-              className="h-10 w-auto object-contain"
-              priority
-            />
-          ) : (
-            <div className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-sm font-bold text-white shadow-sm">
-                MC
-              </div>
-              <div className="leading-tight">
-                <div className="text-lg font-bold tracking-tight text-foreground">
-                  {settings.businessName}
-                </div>
-                <div className="text-xs text-muted">Computer specialist</div>
-              </div>
-            </div>
-          )}
+          <Image
+            src={settings.logoPath || "/mathcomputers-logo.png"}
+            alt={settings.businessName}
+            width={200}
+            height={133}
+            className="h-12 w-auto max-w-[200px] object-contain sm:h-14"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
