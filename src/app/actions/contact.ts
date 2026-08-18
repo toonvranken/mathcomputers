@@ -66,7 +66,7 @@ export async function sendContactMessage(input: {
   }
 
   // Altijd opslaan in admin (bron van waarheid)
-  await prisma.contactMessage.create({
+  const created = await prisma.contactMessage.create({
     data: {
       name: parsed.data.name,
       phone: parsed.data.phone || null,
@@ -75,9 +75,10 @@ export async function sendContactMessage(input: {
     },
   });
 
-  // Extra: e-mailmelding (als SMTP geconfigureerd is)
+  // Melding naar info@mathcomputers.be (SMTP in .env)
   // Falen van mail mag het formulier niet laten mislukken
   await sendContactNotification({
+    id: created.id,
     name: parsed.data.name,
     email: parsed.data.email,
     phone: parsed.data.phone,

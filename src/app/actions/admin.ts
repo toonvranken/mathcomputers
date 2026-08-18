@@ -333,6 +333,21 @@ export async function deleteUserAction(formData: FormData) {
   redirect("/admin/users?ok=1");
 }
 
+export async function sendTestEmailAction(formData: FormData) {
+  await requireUser();
+  const { sendTestEmail } = await import("@/lib/mail");
+  const to = String(formData.get("to") || "").trim();
+  const result = await sendTestEmail(to || undefined);
+  if (result.sent) {
+    redirect(
+      `/admin/messages?mailOk=1&to=${encodeURIComponent(result.to || to)}`,
+    );
+  }
+  redirect(
+    `/admin/messages?mailError=${encodeURIComponent(result.error || "Mailfout")}`,
+  );
+}
+
 export async function markMessageReadAction(formData: FormData) {
   await requireUser();
   const id = String(formData.get("id") || "");
