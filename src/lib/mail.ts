@@ -154,7 +154,7 @@ export async function sendTestEmail(
   const to = (toOverride || defaultTo || "").trim();
   const transporter = createTransport();
 
-  if (!transporter || !status.host || !status.user || !process.env.SMTP_PASS) {
+  if (!transporter || !status.configured) {
     return {
       sent: false,
       error: `SMTP niet geconfigureerd (ontbreekt: ${status.missing.join(", ") || "SMTP_*"})`,
