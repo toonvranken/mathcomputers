@@ -9,6 +9,7 @@ import {
 import { getSiteData } from "@/lib/site";
 import { ContactCard } from "@/components/home/ContactCard";
 import { ServiceGrid } from "@/components/home/ServiceGrid";
+import { PartnersSection } from "@/components/home/PartnersSection";
 import { TeamViewerIcon } from "@/components/icons/TeamViewerIcon";
 
 export default async function HomePage() {
@@ -155,6 +156,8 @@ export default async function HomePage() {
           title={settings.servicesExtraTitle}
           subtitle={settings.servicesExtraSubtitle}
         />
+
+        <PartnersSection />
 
         {/* CTA band */}
         <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-brand to-brand-dark px-6 py-10 text-white sm:px-10">

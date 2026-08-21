@@ -155,6 +155,29 @@ export function Footer({
                 Webwinkel
               </a>
             </li>
+            <li className="pt-2 text-xs uppercase tracking-wide text-slate-500">
+              Partners
+            </li>
+            <li>
+              <a
+                href="https://www.flandra.be/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent"
+              >
+                Flandra — digitaal &amp; web
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.yomie.be/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent"
+              >
+                Yomie — muziek &amp; signage
+              </a>
+            </li>
             <li>
               <a
                 href={settings.repairStatusUrl}
